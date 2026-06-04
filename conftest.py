@@ -31,6 +31,15 @@ def api(token, base_url):
 
 
 @pytest.fixture
-def test_folder():
-    """Путь к тестовой папке — общий для всех тестов."""
+def test_folder(api):
+    """Создаёт папку перед тестом, гарантированно удаляет после."""
+    path = "/test_api_folder"
+    api.create_folder(path)
+    yield path
+    api.delete_resource(path, permanently=True)
+
+
+@pytest.fixture
+def clean_folder_path():
+    """Просто путь без создания — для тестов, которые сами проверяют создание."""
     return "/test_api_folder"

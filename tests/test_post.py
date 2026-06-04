@@ -11,15 +11,21 @@ def sample_file():
         f.write(content)
         file_path = f.name
     yield file_path
-    os.unlink(file_path)  # удаляем после теста
+    os.unlink(file_path)
 
 
-def test_upload_file(api, sample_file):
+@pytest.fixture
+def remote_test_file(api):
+    """Фикстура для удалённого файла — гарантированно удаляет после теста."""
+    path = "/test_uploaded_file.txt"
+    yield path
+    api.delete_resource(path, permanently=True)
+
+
+def test_upload_file(api, sample_file, remote_test_file):
     """Проверяем полный цикл загрузки файла."""
-    remote_path = "/test_uploaded_file.txt"
-
     # 1. Получить ссылку для загрузки
-    link_resp = api.get_upload_link(remote_path, overwrite=True)
+    link_resp = api.get_upload_link(remote_test_file, overwrite=True)
     assert link_resp.status_code == 200
     upload_url = link_resp.json()["href"]
 
@@ -28,9 +34,7 @@ def test_upload_file(api, sample_file):
     assert upload_resp.status_code == 201
 
     # 3. Проверить, что файл появился на диске
-    info = api.get_resource(remote_path)
+    info = api.get_resource(remote_test_file)
     assert info.status_code == 200
     assert info.json()["name"] == "test_uploaded_file.txt"
-
-    # 4. Очистка
-    api.delete_resource(remote_path)
+    assert info.json()["type"] == "file"

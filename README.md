@@ -33,5 +33,5 @@ pip install -r requirements.txt
 
 ### 4. Запустить тесты
 ```bash
-pytest tests/ -v
+pytest
 ```

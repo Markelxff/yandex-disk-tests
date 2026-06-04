@@ -23,3 +23,14 @@ https://yandex.ru/dev/disk/poligon/
 
 ### 2. Создать .env файл
 Скопируй `.env.example` в `.env` и вставь свой токен:
+
+
+### 3. Установить зависимости
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Запустить тесты
+```bash
+pytest tests/ -v
+```

@@ -1,3 +1,4 @@
+![Tests](https://github.com/Markelxff/yandex-disk-tests/actions/workflows/tests.yml/badge.svg)
 # Автотесты для API Яндекс.Диска
 
 Проект с автотестами для проверки REST API Яндекс.Диска.

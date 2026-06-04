@@ -1,6 +1,7 @@
 import os
 import tempfile
 import pytest
+from api_client import YandexDiskClient
 
 
 @pytest.fixture
@@ -38,3 +39,10 @@ def test_upload_file(api, sample_file, remote_test_file):
     assert info.status_code == 200
     assert info.json()["name"] == "test_uploaded_file.txt"
     assert info.json()["type"] == "file"
+
+
+def test_get_upload_link_unauthorized(base_url):
+    """Запрос ссылки загрузки с невалидным токеном должен вернуть 401."""
+    client = YandexDiskClient(base_url, token="invalid_token")
+    response = client.get_upload_link("/test.txt")
+    assert response.status_code == 401

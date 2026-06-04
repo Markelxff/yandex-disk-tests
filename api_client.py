@@ -8,6 +8,10 @@ class YandexDiskClient:
         self.base_url = base_url
         self.headers = {"Authorization": f"OAuth {token}"}
 
+    def get_disk_info(self):
+        """GET — получить общую информацию о диске."""
+        return requests.get(self.base_url, headers=self.headers)
+
     def get_resource(self, path, params=None):
         """GET — получить информацию о файле или папке."""
         url = f"{self.base_url}/resources"

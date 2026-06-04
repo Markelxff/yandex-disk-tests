@@ -18,3 +18,9 @@ def test_create_folder_conflict(api, clean_folder_path):
         assert response.status_code == 409
     finally:
         api.delete_resource(clean_folder_path, permanently=True)
+
+
+def test_create_folder_invalid_path(api):
+    """Создание папки с пустым путём должно вернуть 400."""
+    response = api.create_folder("")
+    assert response.status_code == 400
